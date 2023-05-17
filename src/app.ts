@@ -1,18 +1,23 @@
 import express, { Application } from "express";
 import helmet from "helmet";
 import cors from "cors";
-import db from "./database/sequelize";
-import errorMiddleware from "./middleware/error.middleware";
-import Controller from "./utils/interfaces/IController";
+
+import errorMiddleware from "@middlewares/error.middleware";
+import db from "@database/sequelize"
+
+import { UserController } from "@modules/User";
+import { CompanyController } from "@modules/Company";
+import { EmployeeController } from "@modules/Employee";
 
 export default class App {
-  private app: Application;
-  private PORT: number;
-  constructor(Controllers: Controller[], port: number) {
+  public app: Application;
+  private readonly port: string;
+
+  constructor() {
+    this.port = process.env.SERVER_PORT || "3000";
     this.app = express();
-    this.PORT = port;
+
     this.initMiddleware();
-    this.initRoutes(Controllers);
     this.initErrorHandle();
   }
 
@@ -23,8 +28,14 @@ export default class App {
     this.app.use(express.urlencoded({ extended: true }));
   }
 
-  private initRoutes(Controllers: Controller[]) {
-    Controllers.forEach((controller) => {
+  private initControllers() {
+    const controllers = [
+      new UserController(),
+      new CompanyController(),
+      new EmployeeController(),
+    ];
+
+    controllers.forEach((controller) => {
       this.app.use(`/api/${controller.path}`, controller.router);
     });
   }
@@ -32,15 +43,15 @@ export default class App {
   private initErrorHandle() {
     this.app.use(errorMiddleware);
     process.on("uncaughtException", (e) => {
-      console.log("Process ile yakalandı", e);
+      console.log("catching with process", e);
     });
   }
 
   public start() {
-    this.app.listen(this.PORT, async () => {
+    this.app.listen(this.port, async () => {
       await db.authenticate();
-      console.log("Veritabanı bağlantısı başarılı.");
-      console.log(`Server ${this.PORT} portu üzerinden çalışıyor`);
+      console.log("database connection is successfully");
+      console.log(`Server is alive on: ${this.port} `);
     });
   }
 }

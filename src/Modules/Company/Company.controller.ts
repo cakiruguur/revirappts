@@ -1,7 +1,7 @@
 import { RequestHandler, Router } from "express";
-import w from "../../utils/helpers/promiseWrapper";
-import Controller from "../../utils/interfaces/IController";
-import Company, { ICompany } from "./Company.model";
+import w from "@utils/helpers/promiseWrapper";
+import Controller from "@utils/interfaces/IController";
+import {Company, ICompany } from "@modules/Company";
 
 export default class CompanyController implements Controller {
   constructor(public path = "company", public router = Router()) {

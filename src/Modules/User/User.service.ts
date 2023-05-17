@@ -1,5 +1,5 @@
-import HttpException from "../../utils/exceptions/http.exception";
-import User, { IUser } from "./User.model";
+import HttpException from "@utils/exceptions/http.exception";
+import {User, IUser} from "./index";
 import jwt from "jsonwebtoken";
 
 class UserService {

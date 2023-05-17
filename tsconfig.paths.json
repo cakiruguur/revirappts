@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "paths": {
+      "@modules/*": ["Modules/*/index.ts"],
+      "@utils/*": ["utils/*"],
+      "@database/*": ["database/*"],
+      "@middlewares/*": ["middleware/*"],
+      "@configs/*": ["config/*"]
+    }
+  }
+}

@@ -1,8 +1,17 @@
+import path from "path";
+import fg from "fast-glob";
+import dotenv from "dotenv";
 import App from "./app";
-import CompanyController from "./Modules/Company/Company.controller";
-import EmployeeController from "./Modules/Employee/Employee.controller";
-import UserController from "./Modules/User/User.controller";
+import Routes from "./routes";
+import Controller from "./utils/interfaces/IController";
 
-const server = new App([new UserController(), new CompanyController(), new EmployeeController()], 3000);
+dotenv.config();
 
-server.start();
+const controllerFiles = fg.sync(path.join(__dirname, "Modules", "**/*Controller.ts"));
+const controllers: Controller[] = controllerFiles.map(file => new (require(file).default)());
+
+const app = new App();
+
+new Routes(app.app, controllers);
+
+app.start();

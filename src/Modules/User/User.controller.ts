@@ -1,7 +1,7 @@
 import UserService from "./User.service";
 import { RequestHandler, Router } from "express";
-import Controller from "../../utils/interfaces/IController";
-import w from "../../utils/helpers/promiseWrapper";
+import Controller from "@utils/interfaces/IController";
+import w from "@utils/helpers/promiseWrapper";
 
 export default class UserController implements Controller {
   private service: UserService;
